@@ -1,0 +1,56 @@
+
+
+version: "3"
+services:
+  db:
+    image: postgres:11
+#    restart: always
+    ports:
+      - 5445:5432
+    volumes:
+      - 'dbdata1:/bitnami/postgresql'
+      - './postgresql.conf:/bitnami/postgresql/conf/postgresql.conf'
+    environment:
+      - 'ALLOW_EMPTY_PASSWORD=yes'
+  redis:
+    image: redis
+#    restart: always
+    ports:
+      - 6335:6379
+    volumes:
+      - redis:/data
+
+  zookeeper:
+    image: debezium/zookeeper:0.10
+#    restart: always
+    ports:
+     - 2185:2181
+     - 2885:2888
+     - 3885:3888
+  kafka:
+    image: debezium/kafka:0.10
+#    restart: always
+    ports:
+     - 9095:9092
+    links:
+     - zookeeper
+    environment:
+     - ZOOKEEPER_CONNECT=zookeeper:2185
+
+  connect:
+    image: debezium/connect:0.10
+#    restart: always
+    ports:
+     - 8086:8083
+    links:
+     - kafka
+     - db
+    environment:
+     - BOOTSTRAP_SERVERS=kafka:9095
+     - GROUP_ID=icheck
+     - CONFIG_STORAGE_TOPIC=my_connect_configs
+     - OFFSET_STORAGE_TOPIC=my_connect_offsets
+     - STATUS_STORAGE_TOPIC=my_connect_statuses
+volumes:
+  redis:
+  dbdata1:
