@@ -1,0 +1,26 @@
+{
+  "app": {
+    "port": 3000
+  },
+  "database": {
+    "url": "postgres://postgres:123123@127.0.0.1:5445/test",
+    "logging": false
+  },
+  "news": {
+    "database": {
+      "url": "postgres://postgres:123123@127.0.0.1:5432/icheck-test",
+      "logging": false
+    }
+  },
+  "cors": {
+    "origin": "*",
+    "methods": "GET,HEAD,PUT,POST,DELETE",
+    "preflightContinue": false,
+    "optionsSuccessStatus": 204
+  },
+  "kafka": {
+    "url": "localhost:9095",
+    "group_id": "icheck_core_service",
+    "topics": ["test_test"]
+  }
+}

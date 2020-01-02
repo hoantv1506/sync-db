@@ -1,14 +1,22 @@
 import faker from "faker";
 import { Sequelize } from "sequelize-typescript";
+import { kafkaProducer } from "./libs/kafka/kafka-producer";
+import config from 'config';
 
 testaaa()
     .then(() => {
         console.log(">>>>>>>>>>>>>>: done", 0);
+        process.exit();
     }).catch((err: any) => {
         console.log(">>>>>>>>>>>>>>: err", err.stack);
+        process.exit();
 });
 
 async function testaaa() {
+    kafkaProducer.send('test_test', "hello world");
+
+
+
     const end = 1;
 }
 
